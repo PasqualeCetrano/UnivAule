@@ -50,8 +50,7 @@ class Schedule{
   /// Se un campo è null, mantiene il valore originale dell'oggetto (this.campo).
   Schedule copyWith({
     String? stato,
-    // Puoi aggiungere altri campi se pensi che possano cambiare, 
-    // ma per ora ci serve principalmente lo stato.
+
   }) {
     return Schedule(
       classroomId: this.classroomId,
