@@ -9,7 +9,8 @@ class Schedule{
   final String nomeInsegnante;   
   final String cognomeInsegnante; 
   final DateTime orarioInizio;   
-  final DateTime orarioFine;     
+  final DateTime orarioFine;  
+  final DateTime creazione; // Data di creazione della prenotazione   
   final String tipo;
   final String stato;
 
@@ -22,6 +23,7 @@ class Schedule{
     required this.orarioInizio,
     required this.orarioFine,
     required this.tipo,
+    required this.creazione,
     this.stato = 'confermata',
   });
 
@@ -50,18 +52,17 @@ class Schedule{
   /// Se un campo è null, mantiene il valore originale dell'oggetto (this.campo).
   Schedule copyWith({
     String? stato,
-    // Puoi aggiungere altri campi se pensi che possano cambiare, 
-    // ma per ora ci serve principalmente lo stato.
   }) {
     return Schedule(
-      classroomId: this.classroomId,
-      matricola: this.matricola,
-      materia: this.materia,
-      nomeInsegnante: this.nomeInsegnante,
-      cognomeInsegnante: this.cognomeInsegnante,
-      orarioInizio: this.orarioInizio,
-      orarioFine: this.orarioFine,
-      tipo: this.tipo,
+      classroomId: classroomId,
+      matricola: matricola,
+      materia: materia,
+      nomeInsegnante: nomeInsegnante,
+      cognomeInsegnante: cognomeInsegnante,
+      orarioInizio: orarioInizio,
+      orarioFine: orarioFine,
+      creazione: creazione,
+      tipo: tipo,
       stato: stato ?? this.stato,
     );
   }
@@ -77,6 +78,7 @@ class Schedule{
       // Convertiamo la stringa salvata nel DB di nuovo in DateTime
       orarioInizio: DateTime.parse(json['orarioInizio'] as String),
       orarioFine: DateTime.parse(json['orarioFine'] as String),
+      creazione: DateTime.parse(json['creazione'] as String),
       tipo: json['tipo'] as String,
       stato: json['stato'] as String,
     );
@@ -92,7 +94,8 @@ class Schedule{
       // Salviamo i DateTime come stringhe ISO8601 (formato standard YYYY-MM-DD HH:mm:ss)
       'orarioInizio': orarioInizio.toIso8601String(),
       'orarioFine': orarioFine.toIso8601String(),
-      'type': tipo,
+      'creazione': creazione.toIso8601String(),
+      'tipo': tipo,
       'stato': stato,
     };
   }
