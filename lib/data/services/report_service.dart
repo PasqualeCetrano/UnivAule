@@ -31,7 +31,8 @@ class ReportService{
     return _mockReports.where((r) => r.classroomId == classroomId).toList();
   }
 
-//andiamo ad aggiungere la segnalazione compilata dall'utente, è rappresentata tramite newReport, che è un oggetto Report senza ID (perché lo crea il DB) e con i campi compilati dalla UI. Il metodo restituisce un Future<bool> per confermare alla UI se l'operazione è riuscita o meno.
+//andiamo ad aggiungere la segnalazione compilata dall'utente, è rappresentata tramite newReport,
+// che è un oggetto Report senza ID (perché lo crea il DB) e con i campi compilati dalla UI. 
   Future<bool> sendReport(Report newReport) async {
     await Future.delayed(const Duration(seconds: 1));
 

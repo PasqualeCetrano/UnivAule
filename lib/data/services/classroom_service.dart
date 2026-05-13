@@ -45,6 +45,7 @@ class ClassroomService{
         cognomeInsegnante: 'Rossi',
         orarioInizio: DateTime(2024, 4, 27, 9, 30),
         orarioFine: DateTime(2024, 4, 27, 11, 30),
+        creazione: DateTime(2024, 4, 20, 10, 0), // Data di creazione della prenotazione
         tipo: 'Lezione',
       ),
       Schedule(
@@ -55,6 +56,7 @@ class ClassroomService{
         cognomeInsegnante: 'Bianchi',
         orarioInizio: DateTime(2024, 4, 28, 14, 0),
         orarioFine: DateTime(2024, 4, 28, 16, 0),
+        creazione: DateTime(2024, 4, 22, 10, 0),
         tipo: 'Conferenza',
       ),
       Schedule(
@@ -65,6 +67,7 @@ class ClassroomService{
         cognomeInsegnante: 'Verdi',
         orarioInizio: DateTime(2024, 4, 27, 14, 00),
         orarioFine: DateTime(2024, 4, 27, 16, 00),
+        creazione: DateTime(2024, 4, 25, 10, 0),
         tipo: 'Laboratorio',
       ),
     ];
@@ -76,8 +79,13 @@ class ClassroomService{
     return mockClassrooms;
   }
 
+  Future<List<Schedule>> getAllSchedules()async{
+    await Future.delayed(const Duration(seconds: 1));
+    return allSchedules;
+  }
 
-  // ci restituisce l'aula e la data selezionata dall'utente es 27 aprile per A1.1
+
+  // ci restituisce l'aula e la data selezionata dall'utente es (27 aprile per A1.1)
   Future<List<Schedule>> fetchSchedules(String classroomId, DateTime selectedDate) async {
     await Future.delayed(const Duration(seconds: 1));
     
@@ -88,7 +96,7 @@ class ClassroomService{
       s.orarioInizio.day == selectedDate.day
     ).toList();
 
-filtrate.sort((a,b) => a.orarioInizio.compareTo(b.orarioInizio));
+    filtrate.sort((a,b) => a.orarioInizio.compareTo(b.orarioInizio));
 
     return filtrate;
 
@@ -113,10 +121,12 @@ filtrate.sort((a,b) => a.orarioInizio.compareTo(b.orarioInizio));
 
       // Logica Prese: se il checkbox è attivo, controlliamo il tipo
       bool matchPrese = true; 
-        if (vuolePrese == true) { //Se l'utente ha attivato il filtro
-        //Sovrascriviamo matchPrese con il risultato del confronto
-        matchPrese = aula.tipoPrese == tipoPreseSpecifico; 
-        }
+      if (vuolePrese == true) {
+        // 1. Escludiamo le aule che hanno il valore che rappresenta "nessuna presa"
+        // 2. Se il prof ha scelto un tipo specifico, deve coincidere
+        matchPrese = aula.tipoPrese != "Nessuna" && 
+                    (tipoPreseSpecifico == null || aula.tipoPrese == tipoPreseSpecifico);
+      }
 
       //se l'aula rispetta tutti i requisiti viene aggiunta alla lista delle aule da restituire
       return matchPosti && matchProiettore && matchPrese;
@@ -145,12 +155,10 @@ filtrate.sort((a,b) => a.orarioInizio.compareTo(b.orarioInizio));
   }
 
 
-  /// Recupera tutte le prenotazioni fatte da un singolo docente e le restituisce dalla più recente alla 
-  /// più vecchia, per mostrarle nella sezione "Le mie prenotazioni"
+  /// Recupera tutte le prenotazioni fatte da un singolo docente 
   Future<List<Schedule>> fetchSchedulesByTeacher(int matricola) async {
     await Future.delayed(const Duration(milliseconds: 400));
     List<Schedule> prenotazioni = allSchedules.where((s) => s.matricola == matricola).toList();
-    prenotazioni.sort((a, b) => b.orarioInizio.compareTo(a.orarioInizio));
     return prenotazioni;
   }
 
@@ -174,9 +182,10 @@ filtrate.sort((a,b) => a.orarioInizio.compareTo(b.orarioInizio));
         s.orarioFine == orarioFine
       );
 
-// index ci restituisce la riga in cui si trova la prenotazione per quell'aula in quell'orario
+// index ci restituisce la riga in cui si trova la prenotazione per quell'aula in quell'orario,
+// se non la trova restituisce -1
       if (index != -1) {
-        // 2. Usiamo copyWith per creare il nuovo oggetto con lo stato aggiornato
+        //Usiamo copyWith per creare il nuovo oggetto con lo stato aggiornato
         // e rimpiazziamo il vecchio nella lista, poichè sappiamo che gli 
         //oggetti una volta creati non possono essere modificati
         allSchedules[index] = allSchedules[index].copyWith(stato: nuovoStato);
