@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 class Schedule{
@@ -53,14 +53,14 @@ class Schedule{
 
   }) {
     return Schedule(
-      classroomId: this.classroomId,
-      matricola: this.matricola,
-      materia: this.materia,
-      nomeInsegnante: this.nomeInsegnante,
-      cognomeInsegnante: this.cognomeInsegnante,
-      orarioInizio: this.orarioInizio,
-      orarioFine: this.orarioFine,
-      tipo: this.tipo,
+      classroomId: classroomId,
+      matricola: matricola,
+      materia: materia,
+      nomeInsegnante: nomeInsegnante,
+      cognomeInsegnante: cognomeInsegnante,
+      orarioInizio: orarioInizio,
+      orarioFine: orarioFine,
+      tipo: tipo,
       stato: stato ?? this.stato,
     );
   }
