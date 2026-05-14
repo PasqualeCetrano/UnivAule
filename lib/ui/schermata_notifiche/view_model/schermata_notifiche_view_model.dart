@@ -1,47 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:univ_aule/ui/schermata_prenota_aula/view/schermata_prenota_aula_view.dart';
 
-// Modello dati per la singola notifica
-class NotificaDocente {
+class NotificaItem {
   final String id;
+  final String titolo;
   final String messaggio;
-  final String data;
   final String ora;
-  final String idAula; // Utile per sapere quale aula aprire con il tasto "Info"
+  final String nomeAula;
+  final bool aulaDisponibile;
+  final String? professoreOccupante;
 
-  NotificaDocente({
-    required this.id, 
-    required this.messaggio, 
-    required this.data, 
-    required this.ora, 
-    required this.idAula
+  NotificaItem({
+    required this.id,
+    required this.titolo,
+    required this.messaggio,
+    required this.ora,
+    required this.nomeAula,
+    required this.aulaDisponibile,
+    this.professoreOccupante,
   });
 }
 
 class NotificheViewModel extends ChangeNotifier {
-  // Lista iniziale (mockup) per simulare le notifiche ricevute
-  final List<NotificaDocente> _notifiche = [
-    NotificaDocente(
+  // Lista iniziale delle notifiche (non è più 'final' bloccata, così possiamo eliminarle)
+  final List<NotificaItem> _notifiche = [
+    NotificaItem(
       id: '1',
-      messaggio: "L'Aula A.2.4 (Blocco 1) ora è libera. Puoi effettuare la prenotazione.",
-      data: "12/04/2026",
-      ora: "12:00",
-      idAula: "A.2.4",
+      titolo: "Aula Disponibile!",
+      messaggio: "L'Aula Rossa (A.1.8) si è appena liberata. Puoi prenotarla ora.",
+      ora: "10:30",
+      nomeAula: "Aula Rossa (A.1.8) - Blocco 1",
+      aulaDisponibile: true,
     ),
-    NotificaDocente(
+    NotificaItem(
       id: '2',
-      messaggio: "L'Aula Rossa (Coppito 0) è tornata disponibile per domani.",
-      data: "12/04/2026",
-      ora: "09:30",
-      idAula: "Aula Rossa",
+      titolo: "Promemoria Lezione",
+      messaggio: "La tua prenotazione in Aula Verde inizia tra 15 minuti.",
+      ora: "09:15",
+      nomeAula: "Aula Verde (A.2.3) - Blocco 1",
+      aulaDisponibile: false,
+      professoreOccupante: "Prof. Stefano Smriglio",
     ),
   ];
 
-  // Getter per leggere la lista dalla View
-  List<NotificaDocente> get notifiche => _notifiche;
+  List<NotificaItem> get notifiche => _notifiche;
 
-  // Funzione per eliminare una notifica tramite il suo ID
-  void rimuoviNotifica(String id) {
-    _notifiche.removeWhere((n) => n.id == id);
-    notifyListeners(); // Ricarica la UI facendo sparire la card
+  // --- LOGICA DI ELIMINAZIONE ---
+  void eliminaNotifica(String id) {
+    // Rimuove dalla lista la notifica che ha l'ID corrispondente
+    _notifiche.removeWhere((notifica) => notifica.id == id);
+    // Avvisa la View di ridisegnarsi (la card sparirà magicamente)
+    notifyListeners();
+  }
+
+  // --- LOGICA DI NAVIGAZIONE VERSO INFO AULA ---
+  void vaiAlDettaglioAula(BuildContext context, NotificaItem notifica) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DettaglioAulaScreen(
+          isDisponibile: notifica.aulaDisponibile,
+          nomeAula: notifica.nomeAula,
+          professore: notifica.professoreOccupante,
+        ),
+      ),
+    );
   }
 }

@@ -10,11 +10,11 @@ class MiePrenotazioniScreen extends StatelessWidget {
     final viewModel = context.watch<MiePrenotazioniViewModel>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5), // Sfondo grigio chiarissimo come immagine
+      backgroundColor: const Color(0xFFF5F5F5), 
       body: SafeArea(
         child: Column(
           children: [
-            // --- CUSTOM APP BAR (Come immagine) ---
+            // parte alta con tasto indietro, titolo e icona
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -23,13 +23,13 @@ class MiePrenotazioniScreen extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
                   ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Tasto Indietro in un quadrato grigio
+                    // tasto indietro entro un quadrato grigio 
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
@@ -44,7 +44,7 @@ class MiePrenotazioniScreen extends StatelessWidget {
                       'LE TUE PRENOTAZIONI',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 0.5),
                     ),
-                    // Icona Calendario/Tabella a destra
+                    // icona calendario a destra
                     const Padding(
                       padding: EdgeInsets.only(right: 8.0),
                       child: Icon(Icons.calendar_view_day_outlined, color: Colors.black54),
@@ -54,7 +54,7 @@ class MiePrenotazioniScreen extends StatelessWidget {
               ),
             ),
 
-            // --- LISTA PRENOTAZIONI ---
+            // lista prenotazioni
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -69,7 +69,7 @@ class MiePrenotazioniScreen extends StatelessWidget {
       ),
     );
   }
-
+// widget helper per le card
   Widget _buildModernCard(BuildContext context, MiePrenotazioniViewModel viewModel, PrenotazioneItem item) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -77,34 +77,34 @@ class MiePrenotazioniScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15, offset: const Offset(0, 5))
+          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15, offset: const Offset(0, 5))
         ],
       ),
-      // ClipRRect serve per far sì che la barra laterale segua l'arrotondamento della card
-      child: ClipRRect(
+      
+      child: ClipRRect( // Arrotonda anche la barra laterale (AI)
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: () => viewModel.vaiAlDettaglio(context, item.id),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(color: item.coloreBarra, width: 8), // Barra gialla laterale
+                left: BorderSide(color: item.coloreBarra, width: 8), // barra gialla laterale
               ),
             ),
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Titolo Aula
+                // titolo Aula
                 Text(
                   item.nomeAula,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black87),
                 ),
                 const SizedBox(height: 20),
-                // Riga con i due chip (Pillole)
+                // riga con piccoli box per orario e data
                 Row(
                   children: [
-                    // Chip Orario (Grigio scuro)
+                    // box orario
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                       decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class MiePrenotazioniScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Chip Data (Bordato)
+                    // box data
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                       decoration: BoxDecoration(

@@ -8,18 +8,16 @@ class SchermataLoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<SchermataLoginViewModel>();
+    final viewModel = context.watch<SchermataLoginViewModel>(); // Ascolta i cambiamenti del ViewModel
 
     return Scaffold(
-      // Uno sfondo grigio chiarissimo fa risaltare il box bianco del login
       backgroundColor: const Color(0xFFF5F5F5), 
-      body: Center(
-        child: SingleChildScrollView(
+      body: Center( //per mantenere tutto al centro 
+        child: SingleChildScrollView( // Sempre per evitare overflow su schermi piccoli
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // --- SEZIONE BRANDING (In alto) ---
               Icon(Icons.school, size: 70, color: Colors.blue[900]),
               const SizedBox(height: 16),
               Text(
@@ -33,29 +31,28 @@ class SchermataLoginView extends StatelessWidget {
               ),
               const SizedBox(height: 40),
 
-              // --- BOX DI LOGIN ---
+              // Contenitore del Login 
               Container(
-                width: double.infinity,
-                // Aumentando il vertical padding a 40 rendiamo il box più "allungato" e arioso
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
-                decoration: BoxDecoration(
+                width: double.infinity, // occupa tutto lo schermo disponibile
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0), // fatto più alto 
+                decoration: BoxDecoration( // decorazione del box
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
+                  boxShadow: [  // ombra leggera
+                    BoxShadow( 
                       color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     )
                   ],
-                  // Aggiungiamo il dettaglio della linea gialla in alto per richiamare il brand
+                  // linea gialla sopra
                   border: const Border(
                     top: BorderSide(color: Color(0xFFFFEB3B), width: 6),
                   ),
                 ),
-                child: Column(
+                child: Column( // scritta e campi email e password
                   children: [
-                    // Titolo
+                    // titolo
                     const Text(
                       "Effettua il Login",
                       style: TextStyle(
@@ -65,7 +62,7 @@ class SchermataLoginView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Sottotitolo descrittivo
+                    // sottitolo con istruzioni
                     const Text(
                       "Inserisci le credenziali di ateneo per accedere",
                       style: TextStyle(color: Colors.grey, fontSize: 14),
@@ -73,7 +70,7 @@ class SchermataLoginView extends StatelessWidget {
                     ),
                     const SizedBox(height: 35),
 
-                    // Campo Email
+                    // campo Email
                     TextField(
                       decoration: InputDecoration(
                         labelText: "Email istituzionale",
@@ -82,11 +79,11 @@ class SchermataLoginView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Colors.grey.shade300),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder( // bordo quando non è selezionato
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Colors.grey.shade300),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: OutlineInputBorder( // bordo quando è selezionato
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Colors.blue.shade900),
                         ),
@@ -98,7 +95,7 @@ class SchermataLoginView extends StatelessWidget {
 
                     // Campo Password
                     TextField(
-                      obscureText: true,
+                      obscureText: true, // nasconde il testo per la password
                       decoration: InputDecoration(
                         labelText: "Password",
                         prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
@@ -126,7 +123,7 @@ class SchermataLoginView extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[900], // Blu accademico
+                          backgroundColor: Colors.blue[900], 
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),

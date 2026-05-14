@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:univ_aule/ui/annulla_prenotazioni/view/annulla_prenotazioni_view.dart';
-// Importa la schermata di annullamento per il click sulla card
+
 
 class PrenotazioneItem {
   final String id;
   final String nomeAula;
   final String orario;
   final String data;
-  final Color coloreBarra; // Giallo come nell'immagine
+  final Color coloreBarra; 
 
   PrenotazioneItem({
     required this.id, 
     required this.nomeAula, 
     required this.orario, 
     required this.data,
-    this.coloreBarra = const Color(0xFFFFD600), // Giallo acceso
+    this.coloreBarra = const Color(0xFFFFD600),
   });
 }
 
@@ -28,7 +28,7 @@ class MiePrenotazioniViewModel extends ChangeNotifier {
     ),
     PrenotazioneItem(
       id: '2',
-      nomeAula: 'Aula Verde (A.2.3) - Blocco 1',
+      nomeAula: 'Aula Verde (A.2.3) - Blocco 1',       // per ora dati provvisori, poi da collegare al backend
       orario: '9:30-13:30',
       data: '16 Maggio 2026',
     ),
@@ -41,7 +41,7 @@ class MiePrenotazioniViewModel extends ChangeNotifier {
   ];
 
   List<PrenotazioneItem> get prenotazioni => _prenotazioni;
-
+// per andare nella schermata di annullamento prenotazione 
   void vaiAlDettaglio(BuildContext context, String id) {
     Navigator.push(
       context,

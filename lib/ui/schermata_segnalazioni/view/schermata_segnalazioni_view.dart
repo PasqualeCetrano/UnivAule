@@ -21,7 +21,6 @@ class SegnalazioneScreen extends StatelessWidget {
         title: const Text('SEGNALA UN PROBLEMA', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
         centerTitle: true,
       ),
-      // SingleChildScrollView è fondamentale per non far rompere la grafica quando si apre la tastiera
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -33,7 +32,7 @@ class SegnalazioneScreen extends StatelessWidget {
             TextField(
               onChanged: viewModel.updateMatricola,
               decoration: InputDecoration(
-                hintText: "Value",
+                hintText: "Inserisci il tuo numero di matricola",
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -92,7 +91,7 @@ class SegnalazioneScreen extends StatelessWidget {
               onChanged: viewModel.updateDescrizione,
               maxLines: 6, // Rende il box di testo bello grande come nel mockup
               decoration: InputDecoration(
-                hintText: "Descrivi il problema...",
+                hintText: "Descrivi il tuo problema...",
                 hintStyle: const TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

@@ -9,6 +9,7 @@ class RisultatiRicercaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<RisultatiRicercaViewModel>();
 
+    // scritta in alto 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,7 +29,7 @@ class RisultatiRicercaScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: [  // scritta in basso
             const Text(
               "Aule trovate:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -39,12 +40,12 @@ class RisultatiRicercaScreen extends StatelessWidget {
               child: viewModel.risultati.isEmpty
                   ? const Center(
                       child: Text(
-                        "Nessuna aula corrisponde ai filtri selezionati.",
+                        "Nessuna aula corrisponde ai filtri selezionati.", // messaggio se non ci sono risultati
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
                     )
-                  : ListView.builder(
+                  : ListView.builder( // builder lista risultati
                       itemCount: viewModel.risultati.length,
                       itemBuilder: (context, index) {
                         final aula = viewModel.risultati[index];
@@ -57,24 +58,23 @@ class RisultatiRicercaScreen extends StatelessWidget {
       ),
     );
   }
-
+  // widgete helper per le card 
   Widget _buildAulaCard(BuildContext context, RisultatiRicercaViewModel viewModel, RisultatoAula aula) {
     final Color coloreStato = aula.isDisponibile ? Colors.green : Colors.red;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 3, // Fornisce l'ombra in modo nativo
+      elevation: 3, 
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      // Fondamentale: impedisce alla grafica di coprire il bordo colorato interno
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => viewModel.vaiAlDettaglioAula(context, aula.id),
+        // passo oggetto non solo id 
+        onTap: () => viewModel.vaiAlDettaglioAula(context, aula),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            // Applichiamo il bordo verde o rosso a sinistra
             border: Border(
               left: BorderSide(color: coloreStato, width: 6),
             ),
@@ -90,7 +90,6 @@ class RisultatiRicercaScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 aula.nome,
-                // Forziamo il colore nero per visibilità contro la Dark Mode
                 style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black),
               ),
               const SizedBox(height: 12),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:univ_aule/ui/schermata_prenotazione/view_model/schermata_prenotazione_view_model.dart';
-
 class RicercaAuleScreen extends StatelessWidget {
   const RicercaAuleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<RicercaAuleViewModel>();
+    
+    // Controller per mantenere aggiornato il campo testo del giorno
     final giornoController = TextEditingController(text: viewModel.giorno)
       ..selection = TextSelection.collapsed(offset: viewModel.giorno.length);
 
@@ -19,7 +20,7 @@ class RicercaAuleScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -31,7 +32,7 @@ class RicercaAuleScreen extends StatelessWidget {
             const Text("Filtri:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
 
-            // Box N° Posti e Proiettore
+            // box posti e proiettore
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
@@ -42,18 +43,17 @@ class RicercaAuleScreen extends StatelessWidget {
                     width: 60,
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      // Non mettiamo il controller qui per lasciarlo vuoto all'inizio e testare l'errore
                       onChanged: viewModel.setNumeroPosti,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(), 
                         isDense: true, 
                         fillColor: Colors.white, 
                         filled: true,
-                        hintText: "..." // Suggerimento leggero
+                        hintText: "0", 
                       ),
                     ),
                   ),
-                  const Spacer(),
+                  const Spacer(), // spazio tra i due filtri
                   const Text("Proiettore: "),
                   Checkbox(
                     value: viewModel.richiedeProiettore,
@@ -64,7 +64,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Prese e Tendina
+            // box prese
             Row(
               children: [
                 const Text("Prese: "),
@@ -72,7 +72,7 @@ class RicercaAuleScreen extends StatelessWidget {
                   value: viewModel.richiedePrese,
                   onChanged: (val) => viewModel.setRichiedePrese(val ?? false),
                 ),
-                if (viewModel.richiedePrese) ...[
+                if (viewModel.richiedePrese) ...[ // mostra il dropdown solo se "richiedePrese" è true
                   const SizedBox(width: 16),
                   Container(
                     height: 35,
@@ -91,7 +91,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Selettore Data
+            // selettore data
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
@@ -123,7 +123,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Selezione Orari
+            // selettore orari
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
@@ -155,7 +155,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Checkbox disponibilità e Tasto Cerca
+            // checkbox solo disponibili e bottone cerca
             Row(
               children: [
                 const Text("Solo aule disponibili"),
@@ -165,24 +165,26 @@ class RicercaAuleScreen extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 52,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[600], foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[900], 
+                  foregroundColor: Colors.white, 
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
+                ),
                 onPressed: () => viewModel.eseguiRicercaFiltri(context), 
-                child: const Text("Cerca", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text("Cerca", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
               ),
             ),
             
-            // --- SEZIONE RICERCA MANUALE CON AUTOCOMPLETAMENTO ---
+            // ricerca manuale
             const SizedBox(height: 30),
             const Center(child: Text("oppure", style: TextStyle(color: Colors.grey))),
             const SizedBox(height: 8),
             const Center(child: Text("Cerca un'aula specifica", style: TextStyle(fontWeight: FontWeight.bold))),
             const SizedBox(height: 12),
             
-            // Widget Autocomplete magico
-            Autocomplete<String>(
-              // 1. Questa funzione filtra la lista in base a cosa scrivi
+            Autocomplete<String>( // widget di ricerca manuale con suggerimenti
               optionsBuilder: (TextEditingValue textEditingValue) {
                 if (textEditingValue.text.isEmpty) {
                   return const Iterable<String>.empty();
@@ -191,11 +193,9 @@ class RicercaAuleScreen extends StatelessWidget {
                   return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
                 });
               },
-              // 2. Cosa succede quando clicchi su un suggerimento
               onSelected: (String selection) {
                 viewModel.eseguiRicercaManuale(context, selection);
               },
-              // 3. Come disegniamo la casella di testo
               fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
                 return TextField(
                   controller: textEditingController,
@@ -208,7 +208,7 @@ class RicercaAuleScreen extends StatelessWidget {
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                   ),
                   onSubmitted: (String value) {
-                    onFieldSubmitted(); // Completa la scrittura se c'è un match
+                    onFieldSubmitted(); 
                     viewModel.eseguiRicercaManuale(context, value);
                   },
                 );
@@ -220,11 +220,16 @@ class RicercaAuleScreen extends StatelessWidget {
     );
   }
 
+  // widget helper per i dropdown di ore e minuti
   Widget _buildTimeDropdown(String current, List<String> opts, Function(String) onCh) {
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(6), color: Colors.white),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400), 
+        borderRadius: BorderRadius.circular(6), 
+        color: Colors.white
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: current,
