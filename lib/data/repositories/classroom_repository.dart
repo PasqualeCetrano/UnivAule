@@ -5,7 +5,6 @@ import '../../domain/models/classroom.dart';
 import '../../domain/models/schedule.dart';
 import '../../domain/models/report.dart';
 import '../../domain/models/classroomstatus.dart';
-import '../../domain/models/notification.dart';
 import 'package:flutter/material.dart';
 import '../../domain/models/notification.dart' as my;
 

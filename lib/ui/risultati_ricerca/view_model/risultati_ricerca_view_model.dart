@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// IMPORTANTE: Assicurati che questo percorso corrisponda alla cartella in cui si trova la tua View del Dettaglio
+// Assicurati che l'import punti correttamente alla tua schermata di dettaglio
 import 'package:univ_aule/ui/schermata_prenota_aula/view/schermata_prenota_aula_view.dart';
 
 class RisultatoAula {
@@ -19,7 +19,7 @@ class RisultatoAula {
 }
 
 class RisultatiRicercaViewModel extends ChangeNotifier {
-  // Ecco i dati provvisori. Avendo questa lista piena, vedrai le card a schermo.
+  // Dati mock per testare la visualizzazione
   final List<RisultatoAula> _risultati = [
     RisultatoAula(
       id: '1',
@@ -44,7 +44,6 @@ class RisultatiRicercaViewModel extends ChangeNotifier {
 
   List<RisultatoAula> get risultati => _risultati;
 
-  // Navigazione verso la schermata di prenotazione effettiva
   void vaiAlDettaglioAula(BuildContext context, String aulaId) {
     debugPrint("Navigazione verso la prenotazione dell'aula: $aulaId");
     

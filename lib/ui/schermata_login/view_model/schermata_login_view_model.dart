@@ -24,7 +24,7 @@ Future<void> login(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 2)); 
+    await Future.delayed(const Duration(seconds: 1)); 
 
     _isLoading = false;
     notifyListeners();

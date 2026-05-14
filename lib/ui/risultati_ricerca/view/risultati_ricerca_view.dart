@@ -35,7 +35,6 @@ class RisultatiRicercaScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             
-            // Qui gestiamo dinamicamente la lista o il messaggio di lista vuota
             Expanded(
               child: viewModel.risultati.isEmpty
                   ? const Center(
@@ -59,26 +58,27 @@ class RisultatiRicercaScreen extends StatelessWidget {
     );
   }
 
-  // Costruisce la singola Card dell'aula
   Widget _buildAulaCard(BuildContext context, RisultatiRicercaViewModel viewModel, RisultatoAula aula) {
     final Color coloreStato = aula.isDisponibile ? Colors.green : Colors.red;
 
-    return GestureDetector(
-      // COLLEGAMENTO: Al tocco sulla card, andiamo al dettaglio dell'aula
-      onTap: () => viewModel.vaiAlDettaglioAula(context, aula.id),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border(
-            left: BorderSide(color: coloreStato, width: 6),
-            top: BorderSide(color: Colors.grey.shade300),
-            right: BorderSide(color: Colors.grey.shade300),
-            bottom: BorderSide(color: Colors.grey.shade300),
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 3, // Fornisce l'ombra in modo nativo
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      // Fondamentale: impedisce alla grafica di coprire il bordo colorato interno
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => viewModel.vaiAlDettaglioAula(context, aula.id),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            // Applichiamo il bordo verde o rosso a sinistra
+            border: Border(
+              left: BorderSide(color: coloreStato, width: 6),
+            ),
           ),
-        ),
-        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +90,8 @@ class RisultatiRicercaScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 aula.nome,
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                // Forziamo il colore nero per visibilità contro la Dark Mode
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.black),
               ),
               const SizedBox(height: 12),
               Row(
@@ -102,14 +103,20 @@ class RisultatiRicercaScreen extends StatelessWidget {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text(aula.orario, style: const TextStyle(fontSize: 12)),
+                    child: Text(
+                      aula.orario, 
+                      style: const TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w500)
+                    ),
                   ),
                   if (!aula.isDisponibile && aula.professore != null)
                     Row(
                       children: [
                         const Icon(Icons.person, size: 16, color: Colors.grey),
                         const SizedBox(width: 4),
-                        Text(aula.professore!, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+                        Text(
+                          aula.professore!, 
+                          style: TextStyle(fontSize: 13, color: Colors.grey[800])
+                        ),
                       ],
                     ),
                 ],

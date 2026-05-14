@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-// Importiamo la schermata dei risultati per poter navigare verso di essa
 import 'package:univ_aule/ui/risultati_ricerca/view/risultati_ricerca_view.dart';
 
 class RicercaAuleViewModel extends ChangeNotifier {
   // --- Stato dei Filtri ---
-  String _numeroPosti = "100";
+  // Inizializziamo vuoto per testare l'errore!
+  String _numeroPosti = ""; 
   bool _richiedeProiettore = false;
   bool _richiedePrese = false;
   String _tipoPrese = 'Al muro';
   bool _soloDisponibili = false;
+
+  // --- DATABASE SIMULATO PER AUTOSUGGERIMENTI ---
+  final List<String> auleDisponibili = [
+    "Aula Rossa (A.1.8) - Blocco 1",
+    "Aula Verde (A.2.3) - Blocco 1",
+    "Aula A1.6 - Blocco 0",
+    "Laboratorio Turing",
+    "Laboratorio Alan",
+    "Aula Magna (Coppito 1)",
+    "Aula C2.1 - Blocco 2"
+  ];
 
   // --- Stato della Data ---
   int _giornoInt = 27;
@@ -41,13 +52,12 @@ class RicercaAuleViewModel extends ChangeNotifier {
   String get minutiFine => _minutiFine;
   bool get soloDisponibili => _soloDisponibili;
 
-  // --- Setters e Logica ---
+  // --- Setters ---
   void setNumeroPosti(String val) { _numeroPosti = val; notifyListeners(); }
   void setRichiedeProiettore(bool val) { _richiedeProiettore = val; notifyListeners(); }
   void setRichiedePrese(bool val) { _richiedePrese = val; notifyListeners(); }
   void setTipoPrese(String val) { _tipoPrese = val; notifyListeners(); }
   void setSoloDisponibili(bool val) { _soloDisponibili = val; notifyListeners(); }
-  void setRicercaManuale(String val) { notifyListeners(); }
 
   void giornoSuccessivo() { if (_giornoInt < 31) _giornoInt++; notifyListeners(); }
   void giornoPrecedente() { if (_giornoInt > 1) _giornoInt--; notifyListeners(); }
@@ -66,22 +76,46 @@ class RicercaAuleViewModel extends ChangeNotifier {
   void setOraFine(String val) { _oraFine = val; notifyListeners(); }
   void setMinutiFine(String val) { _minutiFine = val; notifyListeners(); }
 
-  // --- Navigazione ---
+  // --- LOGICA DI NAVIGAZIONE E VALIDAZIONE ---
 
-  // Metodo per la ricerca con i filtri
   void eseguiRicercaFiltri(BuildContext context) {
+    // 1. VALIDAZIONE: Controlla se il campo posti è vuoto
+    if (_numeroPosti.trim().isEmpty) {
+      // Mostra un banner di errore nativo
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Attenzione: Inserisci il numero minimo di posti."),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating, // Rende il banner fluttuante e moderno
+        ),
+      );
+      return; // Blocca la navigazione!
+    }
+
+    // Se tutto va bene, naviga.
     debugPrint("Ricerca filtri: $_giornoInt $mese, Posti: $_numeroPosti");
     _navigaAiRisultati(context);
   }
 
-  // Metodo per la ricerca manuale
   void eseguiRicercaManuale(BuildContext context, String query) {
-    if (query.isEmpty) return;
+    if (query.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Inserisci il nome di un'aula per cercare."),
+          backgroundColor: Colors.orange,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     debugPrint("Ricerca manuale per: $query");
     _navigaAiRisultati(context);
   }
 
   void _navigaAiRisultati(BuildContext context) {
+    // Prima di navigare verso una nuova pagina, puliamo eventuali tastiere aperte
+    FocusScope.of(context).unfocus();
+    
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RisultatiRicercaScreen()),

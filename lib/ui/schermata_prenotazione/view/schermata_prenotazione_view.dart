@@ -42,8 +42,15 @@ class RicercaAuleScreen extends StatelessWidget {
                     width: 60,
                     child: TextField(
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(border: OutlineInputBorder(), isDense: true, fillColor: Colors.white, filled: true),
+                      // Non mettiamo il controller qui per lasciarlo vuoto all'inizio e testare l'errore
                       onChanged: viewModel.setNumeroPosti,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(), 
+                        isDense: true, 
+                        fillColor: Colors.white, 
+                        filled: true,
+                        hintText: "..." // Suggerimento leggero
+                      ),
                     ),
                   ),
                   const Spacer(),
@@ -84,7 +91,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Selettore Data con Frecce e Input Manuale
+            // Selettore Data
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
@@ -116,7 +123,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Selezione Orari (Tutti gli orari disponibili)
+            // Selezione Orari
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
@@ -148,7 +155,7 @@ class RicercaAuleScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Checkbox disponibilità e Tasto Cerca Principale
+            // Checkbox disponibilità e Tasto Cerca
             Row(
               children: [
                 const Text("Solo aule disponibili"),
@@ -161,28 +168,51 @@ class RicercaAuleScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[600], foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                // COLLEGAMENTO: Esegue la ricerca con i filtri
                 onPressed: () => viewModel.eseguiRicercaFiltri(context), 
                 child: const Text("Cerca", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
             
-            // Sezione Ricerca Manuale
+            // --- SEZIONE RICERCA MANUALE CON AUTOCOMPLETAMENTO ---
             const SizedBox(height: 30),
             const Center(child: Text("oppure", style: TextStyle(color: Colors.grey))),
             const SizedBox(height: 8),
-            const Center(child: Text("Cerca manualmente", style: TextStyle(fontWeight: FontWeight.bold))),
+            const Center(child: Text("Cerca un'aula specifica", style: TextStyle(fontWeight: FontWeight.bold))),
             const SizedBox(height: 12),
-            TextField(
-              // COLLEGAMENTO: Naviga premendo Invio sulla tastiera
-              onSubmitted: (query) => viewModel.eseguiRicercaManuale(context, query),
-              decoration: InputDecoration(
-                hintText: "Cerca...",
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-              ),
+            
+            // Widget Autocomplete magico
+            Autocomplete<String>(
+              // 1. Questa funzione filtra la lista in base a cosa scrivi
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text.isEmpty) {
+                  return const Iterable<String>.empty();
+                }
+                return viewModel.auleDisponibili.where((String option) {
+                  return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                });
+              },
+              // 2. Cosa succede quando clicchi su un suggerimento
+              onSelected: (String selection) {
+                viewModel.eseguiRicercaManuale(context, selection);
+              },
+              // 3. Come disegniamo la casella di testo
+              fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                return TextField(
+                  controller: textEditingController,
+                  focusNode: focusNode,
+                  decoration: InputDecoration(
+                    hintText: "Es. Aula Rossa, Turing...",
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                  ),
+                  onSubmitted: (String value) {
+                    onFieldSubmitted(); // Completa la scrittura se c'è un match
+                    viewModel.eseguiRicercaManuale(context, value);
+                  },
+                );
+              },
             ),
           ],
         ),

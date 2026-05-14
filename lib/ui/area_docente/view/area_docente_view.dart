@@ -7,7 +7,6 @@ class AreaDocenteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ascoltiamo il ViewModel per gestire la logica di navigazione
     final viewModel = context.watch<AreaDocenteViewModel>();
 
     return Scaffold(
@@ -15,14 +14,9 @@ class AreaDocenteScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Linea Gialla Superiore (Brand Identity UnivAule)
-          Container(
-            height: 10, 
-            width: double.infinity,
-            color: const Color(0xFFFFEB3B)
-          ),
+          // Brand UnivAule
+          Container(height: 10, width: double.infinity, color: const Color(0xFFFFEB3B)),
           
-          // 2. Sezione Saluto Personalizzato
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 40, 30, 20),
             child: Column(
@@ -34,17 +28,12 @@ class AreaDocenteScreen extends StatelessWidget {
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue[900],
-                    letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  "Cosa desidera fare?",
-                  style: TextStyle(
-                    fontSize: 16, 
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  "Bentornato nel tuo pannello di gestione.",
+                  style: TextStyle(fontSize: 16, color: Colors.grey, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -52,7 +41,6 @@ class AreaDocenteScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
           
-          // 3. Lista dei 4 Bottoni Principali
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -89,7 +77,6 @@ class AreaDocenteScreen extends StatelessWidget {
     );
   }
 
-  // Widget Helper per creare i bottoni della dashboard
   Widget _buildDashboardButton({
     required String label,
     required IconData icon,
@@ -110,7 +97,7 @@ class AreaDocenteScreen extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade300),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05), 
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -123,9 +110,8 @@ class AreaDocenteScreen extends StatelessWidget {
               Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 0.8,
                   color: Colors.black87,
                 ),
               ),

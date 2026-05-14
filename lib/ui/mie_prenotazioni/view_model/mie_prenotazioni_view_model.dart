@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:univ_aule/ui/annulla_prenotazioni/view/annulla_prenotazioni_view.dart';
+// Importa la schermata di annullamento per il click sulla card
 
-// Modello dati per lo storico delle prenotazioni
 class PrenotazioneItem {
   final String id;
   final String nomeAula;
   final String orario;
   final String data;
+  final Color coloreBarra; // Giallo come nell'immagine
 
   PrenotazioneItem({
-    required this.id,
-    required this.nomeAula,
-    required this.orario,
+    required this.id, 
+    required this.nomeAula, 
+    required this.orario, 
     required this.data,
+    this.coloreBarra = const Color(0xFFFFD600), // Giallo acceso
   });
 }
 
 class MiePrenotazioniViewModel extends ChangeNotifier {
-  // Dati simulati basati sul tuo mockup
   final List<PrenotazioneItem> _prenotazioni = [
     PrenotazioneItem(
       id: '1',
@@ -40,9 +42,10 @@ class MiePrenotazioniViewModel extends ChangeNotifier {
 
   List<PrenotazioneItem> get prenotazioni => _prenotazioni;
 
-  // Funzione chiamata quando si clicca su una prenotazione
-  void vaiAlDettaglio(BuildContext context, String prenotazioneId) {
-    debugPrint("Apro i dettagli per annullamento della prenotazione: $prenotazioneId");
-    // In futuro: Navigator.push(...) per aprire la schermata di annullamento
+  void vaiAlDettaglio(BuildContext context, String id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AnnullamentoPrenotazioneScreen()),
+    );
   }
 }

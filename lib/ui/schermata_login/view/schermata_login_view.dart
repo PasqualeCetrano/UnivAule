@@ -1,57 +1,159 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:univ_aule/ui/schermata_login/view_model/schermata_login_view_model.dart';
+// Attenzione: verifica che il percorso del tuo ViewModel sia corretto
+import '../view_model/schermata_login_view_model.dart';
 
-class SchermataLoginView extends StatelessWidget { 
-  const SchermataLoginView({super.key}); // costruttore della schermata di login
+class SchermataLoginView extends StatelessWidget {
+  const SchermataLoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<SchermataLoginViewModel>(); // ottiene il ViewModel
+    final viewModel = context.watch<SchermataLoginViewModel>();
+
     return Scaffold(
-     body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text("Email", style: TextStyle(fontWeight: FontWeight.bold)), // Etichetta per il campo email
-                  TextField(
-                    onChanged: viewModel.updateEmail,
-                    decoration: const InputDecoration(hintText: "Value"),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Password", style: TextStyle(fontWeight: FontWeight.bold)), // Etichetta per il campo password
-                  TextField(
-                    onChanged: viewModel.updatePassword,
-                    obscureText: true,
-                    decoration: const InputDecoration(hintText: "Value"),
-                  ),
-                  const SizedBox(height: 30), 
-                  SizedBox( // pulsante di accesso che mostra un indicatore di caricamento quando isLoading è true
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: viewModel.isLoading ? null : () => viewModel.login(context), // disabilita il pulsante durante il caricamento
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: viewModel.isLoading 
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Accedi"),
-                    ),
-                  ),
-                ], 
+      // Uno sfondo grigio chiarissimo fa risaltare il box bianco del login
+      backgroundColor: const Color(0xFFF5F5F5), 
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // --- SEZIONE BRANDING (In alto) ---
+              Icon(Icons.school, size: 70, color: Colors.blue[900]),
+              const SizedBox(height: 16),
+              Text(
+                "UnivAule",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[900],
+                  letterSpacing: 1.2,
+                ),
               ),
-            ),
-          )
+              const SizedBox(height: 40),
+
+              // --- BOX DI LOGIN ---
+              Container(
+                width: double.infinity,
+                // Aumentando il vertical padding a 40 rendiamo il box più "allungato" e arioso
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    )
+                  ],
+                  // Aggiungiamo il dettaglio della linea gialla in alto per richiamare il brand
+                  border: const Border(
+                    top: BorderSide(color: Color(0xFFFFEB3B), width: 6),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // Titolo
+                    const Text(
+                      "Effettua il Login",
+                      style: TextStyle(
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold, 
+                        color: Colors.black87
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // Sottotitolo descrittivo
+                    const Text(
+                      "Inserisci le credenziali di ateneo per accedere",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 35),
+
+                    // Campo Email
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: "Email istituzionale",
+                        prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.blue.shade900),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Campo Password
+                    TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.blue.shade900),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Bottone Accedi
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[900], // Blu accademico
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 2,
+                        ),
+                        // Durante il caricamento il bottone si disabilita per evitare doppi click
+                        onPressed: viewModel.isLoading 
+                            ? null 
+                            : () => viewModel.login(context),
+                        child: viewModel.isLoading
+                            ? const SizedBox(
+                                height: 24, 
+                                width: 24, 
+                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5)
+                              )
+                            : const Text(
+                                "ACCEDI", 
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
