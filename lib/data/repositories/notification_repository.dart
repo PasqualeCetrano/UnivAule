@@ -8,7 +8,7 @@ class NotificationRepository {
   NotificationRepository(this._notificationService);
 
   /// Carica le notifiche e le prepara per la UI
-  Future<List<my.Notification>> getNotifications(int matricola) async {
+  Future<List<my.Notification>> getNotifiche(int matricola) async {
     try {
       // Chiamiamo il service che si occupa del filtraggio e ordinamento
       return await _notificationService.filtraNotifichePerUtente(matricola);
@@ -19,12 +19,12 @@ class NotificationRepository {
   }
 
   /// Quando l'utente clicca su una singola notifica
-  Future<void> setNotificationAsRead(String id) async {
+  Future<void> setNotificaComeLetta(String id) async {
     await _notificationService.segnaComeLetta(id);
   }
 
   /// Restituisce il conteggio per il badge (il numerino rosso)
-  Future<int> getUnreadCount(int matricola) async {
+  Future<int> getConteggio(int matricola) async {
     return await _notificationService.getNotificheNonLette(matricola);
   }
 }
