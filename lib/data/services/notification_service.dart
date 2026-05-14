@@ -17,7 +17,7 @@ class NotificationService{
 
 
   /// Recupera tutte le notifiche indirizzate a un determinato utente (Docente o Studente)
-    Future<List<my.Notification>> fetchNotificationsForUser(int matricolaDestinatario) async {
+    Future<List<my.Notification>> filtraNotifichePerUtente(int matricolaDestinatario) async {
       // Simula il ritardo del caricamento da database
       await Future.delayed(const Duration(milliseconds: 500));
       
@@ -33,7 +33,7 @@ class NotificationService{
     }
 
   //Restituisce il numero di notifiche non ancora lette, così da far comparire il numero sulla UI
-    Future<int> getUnreadCount(int matricola) async {
+    Future<int> getNotificheNonLette(int matricola) async {
       await Future.delayed(const Duration(milliseconds: 100));
       return _mockNotifications
           .where((n) => n.destinatario == matricola && !n.isLetta)
@@ -42,7 +42,7 @@ class NotificationService{
 
 
     /// Cambia lo stato di una notifica da non letta a letta
-  Future<bool> markAsRead(String idNotifica) async {
+  Future<bool> segnaComeLetta(String idNotifica) async {
     // 1. Cerchiamo l'indice della notifica nella lista tramite il suo ID univoco
     int index = _mockNotifications.indexWhere((n) => n.notificaId == idNotifica);
 
@@ -62,7 +62,7 @@ class NotificationService{
 
 
     /// Aggiunge una nuova notifica (metodo chiamato dalla Repository dopo uno slittamento o annullamento)
-    Future<bool> sendNotification(my.Notification newNotification) async {
+    Future<bool> inviaNotifica(my.Notification newNotification) async {
       await Future.delayed(const Duration(milliseconds: 300));
       
       try {

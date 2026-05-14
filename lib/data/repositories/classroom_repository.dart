@@ -65,7 +65,7 @@ final NotificationService _notificationService;
     );
 
     // 2. Recupero segnalazioni
-    final tutteLeSegnalazioni = await _reportService.fetchReportsForClassroom(classroomId);
+    final tutteLeSegnalazioni = await _reportService.filtraReportPerClasse(classroomId);
 
     // 3. Filtro temporale (ultimi 30 giorni)
     final limiteTrentaGiorni = DateTime.now().subtract(const Duration(days: 30));
@@ -367,7 +367,7 @@ final NotificationService _notificationService;
                   isLetta: false,
                 );
 
-                await _notificationService.sendNotification(nuovaNotifica);
+                await _notificationService.inviaNotifica(nuovaNotifica);
 
                 print("Promosso: ${candidato.matricola}");
               }

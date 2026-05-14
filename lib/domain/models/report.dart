@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Report {
-  final int id;           // ID autoincrementale (gestito dal DB)
+  final int? reportId;           // ID autoincrementale (gestito dal DB)
   final int matricola;    // FK verso la tabella Users (chi segnala)
   final String classroomId;  // FK verso la tabella Classrooms (dove è il guasto)
   final String tipoProblema; 
@@ -10,7 +10,7 @@ class Report {
   final String priorita;
 
   Report({
-    required this.id,
+    this.reportId,
     required this.matricola,
     required this.classroomId,
     required this.tipoProblema,
@@ -27,7 +27,7 @@ class Report {
 
   factory Report.fromJson(Map<String, dynamic> json) {
     return Report(
-      id: json['id'] as int,
+      reportId: json['reportId'] as int?,
       matricola: json['matricola'] as int,
       classroomId: json['classroomId'] as String,
       tipoProblema: json['tipoProblema'] as String,
@@ -39,8 +39,7 @@ class Report {
 
   Map<String, dynamic> toJson() {
     return {
-      // L'ID non lo mettiamo se facciamo un INSERT (lo crea il DB)
-      // ma lo includiamo se stiamo aggiornando un report esistente
+      'reportId': reportId,
       'matricola': matricola,
       'classroomId': classroomId,
       'tipoProblema': tipoProblema,

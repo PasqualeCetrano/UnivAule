@@ -11,7 +11,7 @@ class NotificationRepository {
   Future<List<my.Notification>> getNotifications(int matricola) async {
     try {
       // Chiamiamo il service che si occupa del filtraggio e ordinamento
-      return await _notificationService.fetchNotificationsForUser(matricola);
+      return await _notificationService.filtraNotifichePerUtente(matricola);
     } catch (e) {
       print("REPO ERROR: Impossibile recuperare le notifiche: $e");
       return [];
@@ -20,11 +20,11 @@ class NotificationRepository {
 
   /// Quando l'utente clicca su una singola notifica
   Future<void> setNotificationAsRead(String id) async {
-    await _notificationService.markAsRead(id);
+    await _notificationService.segnaComeLetta(id);
   }
 
   /// Restituisce il conteggio per il badge (il numerino rosso)
   Future<int> getUnreadCount(int matricola) async {
-    return await _notificationService.getUnreadCount(matricola);
+    return await _notificationService.getNotificheNonLette(matricola);
   }
 }
