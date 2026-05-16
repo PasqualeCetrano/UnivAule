@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// IMPORTANTE: Controlla che questo percorso sia corretto nel tuo progetto
 import '../view_model/area_docente_view_model.dart';
 
 class AreaDocenteScreen extends StatelessWidget {
@@ -8,19 +7,17 @@ class AreaDocenteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ci colleghiamo al ViewModel per poter richiamare le funzioni di navigazione
     final viewModel = context.watch<AreaDocenteViewModel>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5), // Sfondo moderno grigio chiarissimo
+      backgroundColor: const Color(0xFFF5F5F5), 
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Identità visiva UnivAule (Linea Gialla superiore)
             Container(height: 6, width: double.infinity, color: const Color(0xFFFFEB3B)),
             
-            // Intestazione con il saluto
+            // intestazione con saluto 
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 32, 24, 20),
               child: Column(
@@ -46,33 +43,33 @@ class AreaDocenteScreen extends StatelessWidget {
 
             const SizedBox(height: 10),
             
-            // Lista dei bottoni del menu principale
+            // lista dei bottoni del menu principale
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 children: [
-                  // 1. Vai alla Ricerca Aule (Prenotazione)
+                  // Vai alla Ricerca Aule (schermata_prenotazione)
                   _buildMenuButton(
                     label: "PRENOTA UN'AULA",
                     icon: Icons.calendar_today_outlined,
                     iconColor: Colors.green,
                     onTap: () => viewModel.vaiAPrenotazione(context),
                   ),
-                  // 2. Vai a Le Tue Prenotazioni
+                  //  Vai a Le Tue Prenotazioni (mie_prenotazioni)
                   _buildMenuButton(
                     label: "LE TUE PRENOTAZIONI",
                     icon: Icons.edit_note,
                     iconColor: Colors.orange,
                     onTap: () => viewModel.vaiALeTuePrenotazioni(context),
                   ),
-                  // 3. Vai a Segnala Problema
+                  //  Vai a Segnala Problema (schermata_segnalazioni)
                   _buildMenuButton(
                     label: "SEGNALA PROBLEMA",
                     icon: Icons.error_outline,
                     iconColor: Colors.yellow[800]!,
                     onTap: () => viewModel.vaiASegnalaProblema(context),
                   ),
-                  // 4. Vai a Notifiche
+                  //  Vai a Notifiche (schermata_notifiche)
                   _buildMenuButton(
                     label: "NOTIFICHE",
                     icon: Icons.notifications_none,

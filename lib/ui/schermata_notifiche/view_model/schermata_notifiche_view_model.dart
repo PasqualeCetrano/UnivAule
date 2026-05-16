@@ -22,7 +22,7 @@ class NotificaItem {
 }
 
 class NotificheViewModel extends ChangeNotifier {
-  // Lista iniziale delle notifiche (non è più 'final' bloccata, così possiamo eliminarle)
+  // lista notifiche per ora provvisoria 
   final List<NotificaItem> _notifiche = [
     NotificaItem(
       id: '1',
@@ -45,15 +45,15 @@ class NotificheViewModel extends ChangeNotifier {
 
   List<NotificaItem> get notifiche => _notifiche;
 
-  // --- LOGICA DI ELIMINAZIONE ---
+  // logica eliminazione notifica 
   void eliminaNotifica(String id) {
-    // Rimuove dalla lista la notifica che ha l'ID corrispondente
+    // rimuove notifica in base all'id
     _notifiche.removeWhere((notifica) => notifica.id == id);
-    // Avvisa la View di ridisegnarsi (la card sparirà magicamente)
+    // Avvisa la view)
     notifyListeners();
   }
 
-  // --- LOGICA DI NAVIGAZIONE VERSO INFO AULA ---
+  // logica navigazione verso dettaglio aula
   void vaiAlDettaglioAula(BuildContext context, NotificaItem notifica) {
     Navigator.push(
       context,
