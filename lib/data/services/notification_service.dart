@@ -76,4 +76,28 @@ class NotificationService{
     }
 
 
+
+    /// Elimina una notifica dalla lista tramite il suo ID univoco
+  Future<bool> eliminaNotifica(String idNotifica) async {
+    // Simula il ritardo del caricamento da database
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    try {
+      bool esiste = _mockNotifications.any((n) => n.notificaId == idNotifica);
+      
+      if (esiste) {
+        _mockNotifications.removeWhere((n) => n.notificaId == idNotifica);
+        print("SERVICE: Notifica $idNotifica eliminata con successo.");
+        return true;
+      }
+      
+      print("SERVICE: Impossibile eliminare. Notifica $idNotifica non trovata.");
+      return false;
+    } catch (e) {
+      print("SERVICE ERROR: Errore durante l'eliminazione della notifica: $e");
+      return false;
+    }
+  }
+
+
 }

@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Notification {
-  final String notificaId; // Chiamata NotificationModel per evitare conflitti con classi Flutter
+  final String notificaId; 
   final int creatoreNotifica;    // matricola di chi crea la notifica
   final int destinatario;       // matricola di chi riceve la notifica (non usata per ora, ma utile per future estensioni)
   final String titolo;       // Es: "Lezione spostata"

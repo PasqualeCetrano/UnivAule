@@ -27,4 +27,18 @@ class NotificationRepository {
   Future<int> getConteggio(int matricola) async {
     return await _notificationService.getNotificheNonLette(matricola);
   }
+
+
+  /// Elimina una notifica tramite il suo ID. Metodo chiamato dal ViewModel.
+  Future<bool> cancellaNotifica(String id) async {
+    try {
+      // Chiamiamo il metodo del service appena creato
+      return await _notificationService.eliminaNotifica(id);
+    } catch (e) {
+      print("REPO ERROR: Errore nell'eliminazione della notifica: $e");
+      return false;
+    }
+  }
+
+
 }

@@ -21,9 +21,6 @@ class Report {
 
   String get formattedDate => DateFormat('d MMMM yyyy', 'it_IT').format(dataInvio);
 
-//da vedere bene se serve
-  String get summary => '$tipoProblema - $classroomId';
-
 
   factory Report.fromJson(Map<String, dynamic> json) {
     return Report(
